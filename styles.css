@@ -1,0 +1,196 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 500px;
+    margin: 20px auto;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    color: #007bff;
+}
+
+.search-container input {
+    width: 96%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.add-new-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#add-new-btn {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#add-new-btn span{
+    margin-left: 10px;
+}
+.add-new-container button:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+}
+
+ul li .title {
+    flex: 1;
+    color: #333;
+}
+
+ul li .actions {
+    display: flex;
+    gap: 10px;
+}
+
+ul li .actions a {
+    color: #8b8f94;
+    text-decoration: none;
+}
+
+ul li .actions a:hover {
+    color: #0056b3;
+}
+
+ul li .actions .edit, ul li .actions .delete {
+    cursor: pointer;
+}
+
+ul li .actions .delete:hover {
+    color: #ff4500;
+}
+ul li .actions .edit:hover{
+    color: #286eee;
+}
+
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    width: 500px;
+}
+
+.popup-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.popup-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-content form input {
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.popup-content form button {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* styles.css */
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+    background-color: transparent; /* Button background color */
+    color: blue; /* Text color */
+    padding: 12px 24px; /* Padding inside the button */
+    border: none;
+    cursor: pointer;
+    font-size: 28px;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9; /* Dropdown background color */
+    min-width: 160px; /* Minimum width of the dropdown content */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Box shadow for dropdown */
+    z-index: 1; /* Ensure dropdown is above other content */
+    right: 0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black; /* Link text color */
+    padding: 12px 16px; /* Padding inside each link */
+    text-decoration: none; /* Remove default underline */
+    display: block; /* Display links as block elements */
+}
+
+/* Change link text color on hover */
+.dropdown-content a:hover {
+    background-color: #007bff; /* Background color on hover */
+    color: white; /* Text color on hover */
+}
+
+/* Show dropdown content when button is hovered over */
+.dropdown:hover .dropdown-content {
+    display: block;
+}

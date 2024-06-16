@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Todo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Ma'lumot</h1>
+            <div class="dropdown">
+                <button class="dropbtn"><i class="fas fa-bars"></i></button>
+                <div class="dropdown-content">
+                    <a id="add-new-btn"><i class="fas fa-plus"></i><span>Qo'shish</span></a>
+                    <a target="_blank" href="https://telegra.ph/"><i class="fas fa-sign-out-alt"></i> Telegraph</a>
+                </div>
+            </div>
+            <!-- <div>
+                <button id="add-new-btn">+</button>
+                <a target="_blank" href="https://telegra.ph/" class="telegra-link">Telegraph</a>
+            </div> -->
+        </header>
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Qidirish...">
+        </div>
+        <div class="add-new-container">
+        </div>
+        <ul id="todo-list">
+            <!-- List items will be added here dynamically -->
+        </ul>
+    </div>
+
+    <div id="popup-form" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>Yangi malumot</h2>
+            <form id="add-form">
+                <input type="text" id="title" placeholder="Title" required>
+                <input type="text" id="link" placeholder="Link">
+                <button type="submit">Qo'shish</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDH_exrhbquk5LB6--KGJGVQ0Tm24I89q0",
+            authDomain: "newtodo-90379.firebaseapp.com",
+            projectId: "newtodo-90379",
+            storageBucket: "newtodo-90379.appspot.com",
+            messagingSenderId: "136368805683",
+            appId: "1:136368805683:web:83f5efe559ee37c9225046",
+            measurementId: "G-TV5Q334WLF"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            const addNewBtn = document.getElementById("add-new-btn");
+            const popupForm = document.getElementById("popup-form");
+            const closeBtn = document.querySelector(".close");
+            const addForm = document.getElementById("add-form");
+            const todoList = document.getElementById("todo-list");
+            const searchInput = document.getElementById("search");
+
+            let editMode = false;
+            let editId = null;
+
+            // Fetch and display existing todos
+            const querySnapshot = await getDocs(collection(db, "todos"));
+            querySnapshot.forEach((doc) => {
+                const todo = doc.data();
+                todo.id = doc.id;
+                addTodoToList(todo);
+            });
+
+            addNewBtn.addEventListener("click", function () {
+                popupForm.style.display = "flex";
+            });
+
+            closeBtn.addEventListener("click", function () {
+                popupForm.style.display = "none";
+                addForm.reset();
+                editMode = false;
+                editId = null;
+            });
+
+            addForm.addEventListener("submit", async function (e) {
+                e.preventDefault();
+                const title = document.getElementById("title").value;
+                const link = document.getElementById("link").value;
+
+                if (editMode) {
+                    const todoRef = doc(db, "todos", editId);
+                    await updateDoc(todoRef, {
+                        title: title,
+                        link: link
+                    });
+                    updateTodoInList(editId, title, link);
+                } else {
+                    const docRef = await addDoc(collection(db, "todos"), {
+                        title: title,
+                        link: link
+                    });
+                    const newTodo = {
+                        id: docRef.id,
+                        title: title,
+                        link: link
+                    };
+                    addTodoToList(newTodo);
+                }
+
+                popupForm.style.display = "none";
+                addForm.reset();
+                editMode = false;
+                editId = null;
+            });
+
+            function addTodoToList(todo) {
+                const listItem = document.createElement("li");
+                listItem.setAttribute("data-id", todo.id);
+
+                const titleSpan = document.createElement("span");
+                titleSpan.className = "title";
+                titleSpan.textContent = todo.title;
+
+                const actionsDiv = document.createElement("div");
+                actionsDiv.className = "actions";
+
+                if (todo.link) {
+                    const linkAnchor = document.createElement("a");
+                    linkAnchor.href = todo.link;
+                    linkAnchor.target = "_blank";
+                    linkAnchor.innerHTML = '<i class="fas fa-eye"></i>';
+                    actionsDiv.appendChild(linkAnchor);
+                }
+
+                const editButton = document.createElement("span");
+                editButton.className = "edit";
+                editButton.innerHTML = '<i class="fas fa-edit"></i>';
+                editButton.addEventListener("click", function () {
+                    document.getElementById("title").value = todo.title;
+                    document.getElementById("link").value = todo.link;
+                    popupForm.style.display = "flex";
+                    editMode = true;
+                    editId = todo.id;
+                });
+
+                const deleteButton = document.createElement("span");
+                deleteButton.className = "delete";
+                deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                deleteButton.addEventListener("click", async function () {
+                    const todoRef = doc(db, "todos", todo.id);
+                    await deleteDoc(todoRef);
+                    todoList.removeChild(listItem);
+                });
+
+                actionsDiv.appendChild(editButton);
+                actionsDiv.appendChild(deleteButton);
+
+                listItem.appendChild(titleSpan);
+                listItem.appendChild(actionsDiv);
+
+                todoList.appendChild(listItem);
+            }
+
+            function updateTodoInList(id, title, link) {
+                const listItem = document.querySelector(`[data-id='${id}']`);
+                listItem.querySelector(".title").textContent = title;
+                const actionsDiv = listItem.querySelector(".actions");
+                const linkAnchor = actionsDiv.querySelector("a");
+                if (link) {
+                    if (linkAnchor) {
+                        linkAnchor.href = link;
+                    } else {
+                        const newLinkAnchor = document.createElement("a");
+                        newLinkAnchor.href = link;
+                        newLinkAnchor.target = "_blank";
+                        newLinkAnchor.innerHTML = '<i class="fas fa-eye"></i>';
+                        actionsDiv.insertBefore(newLinkAnchor, actionsDiv.firstChild);
+                    }
+                } else if (linkAnchor) {
+                    actionsDiv.removeChild(linkAnchor);
+                }
+            }
+
+            searchInput.addEventListener("input", function () {
+                const filter = searchInput.value.toLowerCase();
+                const items = todoList.getElementsByTagName("li");
+
+                Array.from(items).forEach(function (item) {
+                    const title = item.querySelector(".title").textContent;
+                    if (title.toLowerCase().includes(filter)) {
+                        item.style.display = "";
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
