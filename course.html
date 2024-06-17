@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Hack The Box</h1>
+            <h1>Course</h1>
             <div class="dropdown">
                 <button class="dropbtn"><i class="fas fa-bars"></i></button>
                 <div class="dropdown-content">
@@ -77,7 +77,7 @@
             let editId = null;
 
             // Fetch and display existing todos
-            const querySnapshot = await getDocs(collection(db, "todos"));
+            const querySnapshot = await getDocs(collection(db, "course"));
             querySnapshot.forEach((doc) => {
                 const todo = doc.data();
                 todo.id = doc.id;
@@ -101,14 +101,14 @@
                 const link = document.getElementById("link").value;
 
                 if (editMode) {
-                    const todoRef = doc(db, "todos", editId);
+                    const todoRef = doc(db, "course", editId);
                     await updateDoc(todoRef, {
                         title: title,
                         link: link
                     });
                     updateTodoInList(editId, title, link);
                 } else {
-                    const docRef = await addDoc(collection(db, "todos"), {
+                    const docRef = await addDoc(collection(db, "course"), {
                         title: title,
                         link: link
                     });
@@ -159,7 +159,7 @@
                 deleteButton.className = "delete";
                 deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
                 deleteButton.addEventListener("click", async function () {
-                    const todoRef = doc(db, "todos", todo.id);
+                    const todoRef = doc(db, "course", todo.id);
                     await deleteDoc(todoRef);
                     todoList.removeChild(listItem);
                 });

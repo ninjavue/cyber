@@ -42,11 +42,6 @@ header h1 {
 #add-new-btn {
     cursor: pointer;
     display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#add-new-btn span{
-    margin-left: 10px;
 }
 .add-new-container button:hover {
     background-color: #0056b3;
@@ -145,52 +140,58 @@ ul li .actions .edit:hover{
     border-radius: 5px;
     cursor: pointer;
 }
-/* styles.css */
 
-/* Dropdown container */
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
-/* Dropdown button */
 .dropbtn {
-    background-color: transparent; /* Button background color */
-    color: blue; /* Text color */
-    padding: 12px 24px; /* Padding inside the button */
+    background-color: transparent;
+    color: blue;
+    padding: 12px 24px;
     border: none;
     cursor: pointer;
     font-size: 28px;
 }
 
-/* Dropdown content (hidden by default) */
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9; /* Dropdown background color */
-    min-width: 160px; /* Minimum width of the dropdown content */
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Box shadow for dropdown */
-    z-index: 1; /* Ensure dropdown is above other content */
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
     right: 0;
     border-radius: 5px;
     overflow: hidden;
 }
 
-/* Links inside the dropdown */
+
 .dropdown-content a {
-    color: black; /* Link text color */
-    padding: 12px 16px; /* Padding inside each link */
-    text-decoration: none; /* Remove default underline */
-    display: block; /* Display links as block elements */
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 10px;
 }
 
-/* Change link text color on hover */
+
 .dropdown-content a:hover {
-    background-color: #007bff; /* Background color on hover */
-    color: white; /* Text color on hover */
+    background-color: #007bff;
+    color: white;
 }
 
-/* Show dropdown content when button is hovered over */
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+
+@media (max-width: 600px) {
+    .popup-content {
+       width: 100vw;
+       height: 100vh;
+    }
 }
